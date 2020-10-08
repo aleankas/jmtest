@@ -13,7 +13,7 @@ import {ImgLogo, IconArrowUp} from '../../assets';
 import {Header, Gap, List, Link} from '../../components';
 import {getListData} from '../../config/Fetching/jokes';
 import {useSelector, useDispatch} from 'react-redux';
-import {alert} from '../../utils';
+import {alert,movingObj} from '../../utils';
 import Shimmer from 'react-native-shimmer';
 
 const Home = () => {
@@ -22,6 +22,7 @@ const Home = () => {
   const [dataList, setDataList] = useState('');
   const [num, setNum] = useState(0);
   const [countPress, setCountPress] = useState(0);
+  const [change, setChange] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   useEffect(() => {
     fetchingData();
@@ -39,6 +40,7 @@ const Home = () => {
       const dataSnap = dataFromRes.slice(0, res.data.value.length - 2);
       setDataList(dataSnap);
       setNum(res.data.value.length - 2);
+      setChange(true);
     }
   };
 
@@ -51,8 +53,14 @@ const Home = () => {
     }, 1000);
   };
 
-  const pressIcon = (id) => {
-    console.log('key: ', id)
+  const pressIcon = (data, key) => {
+    console.log('key: ', key)
+    console.log('dataList: ', data)
+    const objToArr = Object.values(data)
+    const move = movingObj(objToArr, key, key-1);
+    console.log('setelah di up: ', move);
+    setDataList(move);
+
   };
 
   const addMoreData = () => {
@@ -67,6 +75,7 @@ const Home = () => {
       setRefreshing(false);
     }, 500);
   };
+
 
   return (
     <View style={styles.pages}>
@@ -83,12 +92,13 @@ const Home = () => {
               <List
                 index={key + 1}
                 key={data.id}
-                text={data.joke}
+                text={`[${data.id}] ${data.joke}`}
                 onPress={() => alert(data.joke)}
-                onPressIcon={() => pressIcon(key)}
+                onPressIcon={() => pressIcon(dataList, key)}
               />
             );
           })
+          // _list
         ) : (
           <View>
             <List shimmer={stateGlobal.shimmer} />

@@ -27,13 +27,15 @@ const List = ({text, index, onPress, onPressIcon, shimmer}) => {
         padding: 16,
       }}
       onPress={onPress}>
+      
       <Text>{index}</Text>
       <View style={{marginLeft: 15, marginRight: 25, flex: 1}}>
         <Text numberOfLines={1}>{text}</Text>
       </View>
-      <TouchableOpacity onPress={onPressIcon}>
+      {index === 1 ? <Text style={styles.txtTop}>We're on Top</Text> : <TouchableOpacity onPress={onPressIcon}>
         <IconArrowUp />
-      </TouchableOpacity>
+      </TouchableOpacity>}
+      
     </TouchableOpacity>
   );
 };
@@ -47,4 +49,8 @@ const styles = StyleSheet.create({
     height: 45,
     marginBottom: 15,
   },
+  txtTop:{
+    fontWeight: 'bold',
+    color: '#16a085'
+  }
 });
