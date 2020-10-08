@@ -1,4 +1,3 @@
 import Gap from './Gap';
-export {
-  Gap,
-};
+import Link from './Link';
+export {Link, Gap};

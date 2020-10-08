@@ -10,67 +10,62 @@ import {
   Alert,
 } from 'react-native';
 import {ImgLogo, IconArrowUp} from '../../assets';
-import {Header, Gap, List} from '../../components';
+import {Header, Gap, List, Link} from '../../components';
 import {getListData} from '../../config/Fetching/jokes';
 import {useSelector, useDispatch} from 'react-redux';
+import {alert} from '../../utils';
+import Shimmer from 'react-native-shimmer';
 
 const Home = () => {
   const stateGlobal = useSelector((state) => state);
   const dispatch = useDispatch();
-  const [dataList, setDataList] = useState(stateGlobal.data);
+  const [dataList, setDataList] = useState('');
+  const [num, setNum] = useState(0);
+  const [countPress, setCountPress] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
   useEffect(() => {
     fetchingData();
   }, []);
 
   const fetchingData = async () => {
+    dispatch({type: 'SET_SHIMMER', value: true});
     const res = await getListData();
+    dispatch({type: 'SET_SHIMMER', value: false});
+    console.log('length: ', res.data.value.length);
     console.log('res: ', res.data.value);
     if (res) {
-      setDataList(res.data.value);
-      dispatch({type: 'SET_DATA', value: res.data.value});
-      console.log('count: ', dataList.length);
+      const dataFromRes = res.data.value;
+      dispatch({type: 'SET_DATA', value: dataFromRes});
+      const dataSnap = dataFromRes.slice(0, res.data.value.length - 2);
+      setDataList(dataSnap);
+      setNum(res.data.value.length - 2);
     }
   };
 
   const onRefresh = () => {
     setRefreshing(true);
+    fetchingData();
     setTimeout(() => {
+      setCountPress(0);
       setRefreshing(false);
-      fetchingData();
-    }, 2000);
+    }, 1000);
   };
 
-  const alert = (data) => {
-    Alert.alert(
-      '',
-      `${data}`,
-      [
-        {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
-        },
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
-      ],
-      {cancelable: false},
-    );
+  const pressIcon = (id) => {
+    console.log('key: ', id)
   };
 
-  const pressIcon = () => {
-    Alert.alert(
-      'Icon Pressed',
-      '',
-      [
-        {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
-        },
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
-      ],
-      {cancelable: false},
-    );
+  const addMoreData = () => {
+    setRefreshing(true);
+    setTimeout(() => {
+      const varNum = num + 1;
+      const stateDataRedux = stateGlobal.data;
+      const dataSnap = stateDataRedux.slice(0, varNum);
+      setDataList(dataSnap);
+      setNum(varNum);
+      setCountPress(countPress + 1);
+      setRefreshing(false);
+    }, 500);
   };
 
   return (
@@ -82,33 +77,31 @@ const Home = () => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
-        {dataList.data !== '' ? (
-          dataList.data.map((data, key) => {
+        {dataList !== '' ? (
+          dataList.map((data, key) => {
             return (
               <List
                 index={key + 1}
                 key={data.id}
                 text={data.joke}
                 onPress={() => alert(data.joke)}
-                onPressIcon={() => pressIcon()}
+                onPressIcon={() => pressIcon(key)}
               />
             );
           })
         ) : (
           <View>
-            <List shimmer={true} />
+            <List shimmer={stateGlobal.shimmer} />
           </View>
         )}
-
-        <View
-          style={{
-            marginTop: 20,
-            marginBottom: 50,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text>+ Add more data</Text>
-        </View>
+        {countPress < 2 && (
+          <Link
+            shimmer={stateGlobal.shimmer}
+            text="+ Add more data"
+            onPress={addMoreData}
+          />
+        )}
+        <Gap height={35} />
       </ScrollView>
     </View>
   );
