@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, Dimensions } from 'react-native'
 import {ImgLogo} from '../../assets';
 const Splash = ({navigation}) => {
 	useEffect(() => {
