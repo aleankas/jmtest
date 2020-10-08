@@ -1,21 +1,50 @@
-import React from 'react'
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import React from 'react';
+import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {ImgLogo, IconArrowUp} from '../../../assets';
+import Shimmer from 'react-native-shimmer';
 
-const List = () => {
-	return (
-		<TouchableOpacity style={{flexDirection: 'row',alignItems: 'center',justifyContent: 'space-between',marginTop: 15, backgroundColor: '#ecf0f1', padding: 16}}>
-			<Text>1</Text>
-			<View style={{marginLeft: 15, marginRight: 25,flex: 1,}}>
-				<Text numberOfLines={1}>Chuck Norris and Mr. T walked into a bar. The bar was instantly destroyed, as that level of awesome cannot be contained in one building.</Text>
-			</View>
-			<TouchableOpacity>
-				<IconArrowUp />
-			</TouchableOpacity>
-		</TouchableOpacity>
-	)
-}
+const List = ({text, index, onPress, onPressIcon, shimmer}) => {
+  if (shimmer) {
+    return (
+      <View>
+        <Shimmer
+          style={styles.shimmerWrapper}
+          autoRun={true}
+          visible={false}></Shimmer>
+      </View>
+    );
+  }
 
-export default List
+  return (
+    <TouchableOpacity
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginTop: 5,
+        marginBottom: 10,
+        backgroundColor: '#ecf0f1',
+        padding: 16,
+      }}
+      onPress={onPress}>
+      <Text>{index}</Text>
+      <View style={{marginLeft: 15, marginRight: 25, flex: 1}}>
+        <Text numberOfLines={1}>{text}</Text>
+      </View>
+      <TouchableOpacity onPress={onPressIcon}>
+        <IconArrowUp />
+      </TouchableOpacity>
+    </TouchableOpacity>
+  );
+};
 
-const styles = StyleSheet.create({})
+export default List;
+
+const styles = StyleSheet.create({
+  shimmerWrapper: {
+    backgroundColor: '#ecf0f1',
+    width: '100%',
+    height: 45,
+    marginBottom: 15,
+  },
+});

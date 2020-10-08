@@ -1,15 +1,26 @@
 import {NavigationContainer} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React from 'react';
+import {StyleSheet} from 'react-native';
+import {Provider} from 'react-redux';
+import store from './redux/store';
 import Routers from './routers';
 
-const App = () => {
-  // const stateGlobal = useSelector((state) => state);
-  // console.log('stateGlobal from APP : ', stateGlobal);
+const MainApp = () => {
   return (
     <NavigationContainer>
-			<Routers />
-		</NavigationContainer>
+      <Routers />
+    </NavigationContainer>
+  );
+};
+
+const App = () => {
+  return (
+    <Provider store={store}>
+      <MainApp />
+    </Provider>
   );
 };
 
 export default App;
+
+const styles = StyleSheet.create({});

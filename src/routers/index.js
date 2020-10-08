@@ -1,17 +1,13 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {
-  Splash,
-  Home,
-} from '../pages';
+import {Splash, Home} from '../pages';
 
 const Stack = createStackNavigator();
 
-
 const Routers = () => {
   return (
-    <Stack.Navigator initialRouteName="Home">
+    <Stack.Navigator initialRouteName="Splash">
       <Stack.Screen
         name="Splash"
         component={Splash}
@@ -22,7 +18,6 @@ const Routers = () => {
         component={Home}
         options={{headerShown: false}}
       />
-      
     </Stack.Navigator>
   );
 };
