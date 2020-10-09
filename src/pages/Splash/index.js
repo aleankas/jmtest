@@ -1,23 +1,23 @@
-import React, {useEffect, useState} from 'react';
-import { View, Text, StyleSheet, Image, Dimensions } from 'react-native'
+import React, {useEffect} from 'react';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import {ImgLogo} from '../../assets';
 const Splash = ({navigation}) => {
-	useEffect(() => {
-		setTimeout(() => {
-			navigation.replace('Home');
-		}, 3000);
-	}, [navigation])
-	return (
-		<View style={styles.pages}>
-			<View style={styles.wrapper}>
-				<Image source={ImgLogo} style={styles.imgLogo}/>
-				<Text style={styles.title}>Technical Test</Text>
-			</View>
-		</View>
-	)
-}
+  useEffect(() => {
+    setTimeout(() => {
+      navigation.replace('Home');
+    }, 3000);
+  }, [navigation]);
+  return (
+    <View style={styles.pages}>
+      <View style={styles.wrapper}>
+        <Image source={ImgLogo} style={styles.imgLogo} />
+        <Text style={styles.title}>Technical Test</Text>
+      </View>
+    </View>
+  );
+};
 
-export default Splash
+export default Splash;
 
 const styles = StyleSheet.create({
   pages: {
@@ -25,19 +25,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-		padding: 20,
+    padding: 20,
   },
-	wrapper:{
+  wrapper: {
     backgroundColor: 'white',
-		justifyContent: 'center',
+    justifyContent: 'center',
     alignItems: 'center',
-	},
-	imgLogo:{
-		height: 50, 
-		width: 200
-	},
-	title:{
-		fontSize: 18,
-		color: 'black',
-	}
+  },
+  imgLogo: {
+    height: 50,
+    width: 200,
+  },
+  title: {
+    fontSize: 18,
+    color: 'black',
+  },
 });

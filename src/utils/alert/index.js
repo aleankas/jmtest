@@ -1,7 +1,7 @@
 import {Alert} from 'react-native';
-export const alert = (message) => {
+export const alert = (id, message) => {
   Alert.alert(
-    '',
+    `[${id}]`,
     `${message}`,
     [
       {

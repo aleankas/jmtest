@@ -29,6 +29,8 @@ const styles = StyleSheet.create({
   },
   txtLink: {
     color: 'blue',
+    fontSize: 15,
+    textDecorationLine: 'underline',
   },
   shimmerWrapper: {
     justifyContent: 'center',

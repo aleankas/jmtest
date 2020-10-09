@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import {ImgLogo, IconArrowUp} from '../../../assets';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Shimmer from 'react-native-shimmer';
+import {IconArrowUp} from '../../../assets';
 
 const List = ({text, index, onPress, onPressIcon, shimmer}) => {
   if (shimmer) {
@@ -16,26 +16,20 @@ const List = ({text, index, onPress, onPressIcon, shimmer}) => {
   }
 
   return (
-    <TouchableOpacity
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginTop: 5,
-        marginBottom: 10,
-        backgroundColor: '#ecf0f1',
-        padding: 16,
-      }}
-      onPress={onPress}>
-      
-      <Text>{index}</Text>
-      <View style={{marginLeft: 15, marginRight: 25, flex: 1}}>
-        <Text numberOfLines={1}>{text}</Text>
+    <TouchableOpacity style={styles.wrapper} onPress={onPress}>
+      <Text style={styles.txt}>{index}</Text>
+      <View style={styles.viewTxt}>
+        <Text numberOfLines={1} style={styles.txt}>
+          {text}
+        </Text>
       </View>
-      {index === 1 ? <Text style={styles.txtTop}>We're on Top</Text> : <TouchableOpacity onPress={onPressIcon}>
-        <IconArrowUp />
-      </TouchableOpacity>}
-      
+      {index === 1 ? (
+        <Text style={styles.txtTop}>We're on Top</Text>
+      ) : (
+        <TouchableOpacity onPress={onPressIcon}>
+          <IconArrowUp />
+        </TouchableOpacity>
+      )}
     </TouchableOpacity>
   );
 };
@@ -49,8 +43,22 @@ const styles = StyleSheet.create({
     height: 45,
     marginBottom: 15,
   },
-  txtTop:{
+  txtTop: {
     fontWeight: 'bold',
-    color: '#16a085'
-  }
+    color: '#16a085',
+    fontSize: 16,
+  },
+  wrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 5,
+    marginBottom: 10,
+    backgroundColor: '#ecf0f1',
+    padding: 16,
+  },
+  viewTxt: {marginLeft: 15, marginRight: 25, flex: 1},
+  txt: {
+    fontSize: 16,
+  },
 });

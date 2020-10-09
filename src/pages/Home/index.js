@@ -1,28 +1,17 @@
-import React, {useEffect, useState, useCallback} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-  RefreshControl,
-  Alert,
-} from 'react-native';
-import {ImgLogo, IconArrowUp} from '../../assets';
-import {Header, Gap, List, Link} from '../../components';
+import React, {useEffect, useState} from 'react';
+import {RefreshControl, ScrollView, StyleSheet, View} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {Gap, Header, Link, List} from '../../components';
 import {getListData} from '../../config/Fetching/jokes';
-import {useSelector, useDispatch} from 'react-redux';
-import {alert,movingObj} from '../../utils';
-import Shimmer from 'react-native-shimmer';
+import {alert, movingObj} from '../../utils';
 
 const Home = () => {
   const stateGlobal = useSelector((state) => state);
   const dispatch = useDispatch();
+  const [dataFromRedux, setDataFromRedux] = useState(stateGlobal.data);
   const [dataList, setDataList] = useState('');
   const [num, setNum] = useState(0);
   const [countPress, setCountPress] = useState(0);
-  const [change, setChange] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   useEffect(() => {
     fetchingData();
@@ -32,15 +21,12 @@ const Home = () => {
     dispatch({type: 'SET_SHIMMER', value: true});
     const res = await getListData();
     dispatch({type: 'SET_SHIMMER', value: false});
-    console.log('length: ', res.data.value.length);
-    console.log('res: ', res.data.value);
     if (res) {
       const dataFromRes = res.data.value;
       dispatch({type: 'SET_DATA', value: dataFromRes});
       const dataSnap = dataFromRes.slice(0, res.data.value.length - 2);
       setDataList(dataSnap);
       setNum(res.data.value.length - 2);
-      setChange(true);
     }
   };
 
@@ -54,28 +40,25 @@ const Home = () => {
   };
 
   const pressIcon = (data, key) => {
-    console.log('key: ', key)
-    console.log('dataList: ', data)
-    const objToArr = Object.values(data)
-    const move = movingObj(objToArr, key, key-1);
-    console.log('setelah di up: ', move);
+    const objToArr = Object.values(data);
+    const move = movingObj(objToArr, key, key - 1);
     setDataList(move);
-
   };
 
   const addMoreData = () => {
     setRefreshing(true);
     setTimeout(() => {
       const varNum = num + 1;
-      const stateDataRedux = stateGlobal.data;
-      const dataSnap = stateDataRedux.slice(0, varNum);
-      setDataList(dataSnap);
+      const stateDataRedux = dataFromRedux;
+      const dataSnap = stateDataRedux.slice(-varNum)[0];
+      const newData = [];
+      newData.push(dataSnap);
+      setDataList(dataList.concat(dataSnap));
       setNum(varNum);
       setCountPress(countPress + 1);
       setRefreshing(false);
     }, 500);
   };
-
 
   return (
     <View style={styles.pages}>
@@ -91,14 +74,13 @@ const Home = () => {
             return (
               <List
                 index={key + 1}
-                key={data.id}
-                text={`[${data.id}] ${data.joke}`}
-                onPress={() => alert(data.joke)}
+                key={key}
+                text={`[ ${data.id} ] ${data.joke}`}
+                onPress={() => alert(data.id, data.joke)}
                 onPressIcon={() => pressIcon(dataList, key)}
               />
             );
           })
-          // _list
         ) : (
           <View>
             <List shimmer={stateGlobal.shimmer} />

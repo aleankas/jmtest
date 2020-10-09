@@ -1,5 +1,5 @@
 import url from '../Api/url';
 
 export const getListData = (data) => {
-  return url.post('/jokes/random/7', data);
+  return url.post('/jokes/random/10', data);
 };
