@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {RefreshControl, ScrollView, StyleSheet, View} from 'react-native';
+import {
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  View,
+  FlatList,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Gap, Header, Link, List} from '../../components';
 import {getListData} from '../../config/Fetching/jokes';
@@ -26,7 +32,6 @@ const Home = () => {
       dispatch({type: 'SET_DATA', value: dataFromRes});
       const dataSnap = dataFromRes.slice(0, res.data.value.length - 2);
       setDataList(dataSnap);
-      setNum(res.data.value.length - 2);
     }
   };
 
@@ -49,8 +54,8 @@ const Home = () => {
     setRefreshing(true);
     setTimeout(() => {
       const varNum = num + 1;
-      const stateDataRedux = dataFromRedux;
-      const dataSnap = stateDataRedux.slice(-varNum)[0];
+      const stateDataRedux = stateGlobal.data;
+      const dataSnap = stateDataRedux.slice(stateDataRedux.length-varNum)[0];
       const newData = [];
       newData.push(dataSnap);
       setDataList(dataList.concat(dataSnap));
@@ -59,7 +64,6 @@ const Home = () => {
       setRefreshing(false);
     }, 500);
   };
-
   return (
     <View style={styles.pages}>
       <Header />
@@ -75,8 +79,8 @@ const Home = () => {
               <List
                 index={key + 1}
                 key={key}
-                text={`${data.joke}`}
-                onPress={() => alert(data.joke)}
+                text={`[${data.id}] ${data.joke}`}
+                onPress={() => alert(data.id, data.joke)}
                 onPressIcon={() => pressIcon(dataList, key)}
               />
             );

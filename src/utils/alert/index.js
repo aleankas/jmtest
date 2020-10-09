@@ -1,8 +1,8 @@
 import {Alert} from 'react-native';
-export const alert = (id, message) => {
+export function alert(id,message) {
   Alert.alert(
-    '',
-    `${message}`,
+    `${id}`,
+    message,
     [
       {
         text: 'Cancel',
@@ -13,4 +13,4 @@ export const alert = (id, message) => {
     ],
     {cancelable: false},
   );
-};
+}
