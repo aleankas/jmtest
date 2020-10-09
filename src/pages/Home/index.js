@@ -75,8 +75,8 @@ const Home = () => {
               <List
                 index={key + 1}
                 key={key}
-                text={`[ ${data.id} ] ${data.joke}`}
-                onPress={() => alert(data.id, data.joke)}
+                text={`${data.joke}`}
+                onPress={() => alert(data.joke)}
                 onPressIcon={() => pressIcon(dataList, key)}
               />
             );
