@@ -1,11 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  RefreshControl,
-  ScrollView,
-  StyleSheet,
-  View,
-  FlatList,
-} from 'react-native';
+import {RefreshControl, ScrollView, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Gap, Header, Link, List} from '../../components';
 import {getListData} from '../../config/Fetching/jokes';
@@ -14,7 +8,6 @@ import {alert, movingObj} from '../../utils';
 const Home = () => {
   const stateGlobal = useSelector((state) => state);
   const dispatch = useDispatch();
-  const [dataFromRedux, setDataFromRedux] = useState(stateGlobal.data);
   const [dataList, setDataList] = useState('');
   const [num, setNum] = useState(0);
   const [countPress, setCountPress] = useState(0);
@@ -37,6 +30,7 @@ const Home = () => {
 
   const onRefresh = () => {
     setRefreshing(true);
+    setNum(0);
     fetchingData();
     setTimeout(() => {
       setCountPress(0);
@@ -55,7 +49,7 @@ const Home = () => {
     setTimeout(() => {
       const varNum = num + 1;
       const stateDataRedux = stateGlobal.data;
-      const dataSnap = stateDataRedux.slice(stateDataRedux.length-varNum)[0];
+      const dataSnap = stateDataRedux.slice(stateDataRedux.length - varNum)[0];
       const newData = [];
       newData.push(dataSnap);
       setDataList(dataList.concat(dataSnap));
